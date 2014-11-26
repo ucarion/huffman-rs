@@ -37,17 +37,17 @@ impl Ord for HuffTree {
     }
 }
 
-/// Make a Huffman encoding table that maps bytes (u8) to binary sequences
-/// (represented as strings of 1s and 0s).
-pub fn make_huffman_table(bytes: &[u8]) -> HashMap<u8, String> {
+/// Make a Huffman encoding tree from a list of bytes (`u8`s). To use this
+/// function with a string, use it as:
+///
+/// ```
+/// let tree = make_huffman_tree(my_string.as_bytes());
+/// ```
+pub fn make_huffman_tree(bytes: &[u8]) -> HuffTree {
     let byte_counts = byte_frequenies(bytes);
     let trees = frequencies_to_trees(byte_counts);
-    let tree = reduce_huffman_tree(trees);
 
-    let mut encoding_table = HashMap::<u8, String>::new();
-    make_encoding_table(&tree, &mut encoding_table, "".to_string());
-
-    encoding_table
+    reduce_huffman_tree(trees)
 }
 
 fn byte_frequenies(bytes: &[u8]) -> HashMap<u8, int> {
